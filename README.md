@@ -34,57 +34,64 @@ client:
   cache: null
   domain:
     html: 
-	#下面都是jm的域名，也可以根据你自己的网络环境进行调整 优先用最上面的
-       - jmcomic-zzz.one
-       - jmcomic-zzz.org
-       - 18comic.vip 
-       - 18comic.org
-       - jm18c-zxc.org
-       - jm18c-zxc.cc
-       - jm18c-zxc.net
+      #下面都是jm的域名，也可以根据你自己的网络环境进行调整 优先用最上面的
+      - jmcomic-zzz.one
+      - jmcomic-zzz.org
+      - 18comic.vip 
+      - 18comic.org
+      - jm18c-zxc.org
+      - jm18c-zxc.cc
+      - jm18c-zxc.net
     api:
       - www.jmapiproxyxxx.vip 
-		#这是移动端的接口
+        #这是移动端的接口
   impl: html 
-	  # html网页 api移动端
+  # html网页 api移动端
   postman:
     meta_data:
       headers: null
       impersonate: chrome
       proxies: 
-	 #顾名思义代理
+        #顾名思义代理
         http: 127.0.0.1:7890
         https: 127.0.0.1:7890
     type: curl_cffi
   retry_times: 5
+
 dir_rule:
   base_dir: .
   rule: Bd_Pname
+
 download:
   cache: true
   impl: aiohttp  
-	# 可选: requests（默认）、aiohttp（更快，需安装） 这是gpt告诉我的
+  # 可选: requests（默认）、aiohttp（更快，需安装） 这是gpt告诉我的
   chunk_size: 8192
-	#数据块大小 单位字节
+  #数据块大小 单位字节
   image:
     decode: true
     suffix: .jpg 
-	# 若设置为null则保存为webp 转换为pdf文件体积极大 jpg无此问题
+    # 若设置为null则保存为webp 转换为pdf文件体积极大 jpg无此问题
   threading: 
-	# 线程数 章节/图片
+    # 线程数 章节/图片
     image: 4
     photo: 4
+
 log: true
+
 plugins:
   valid: log
+
 version: '2.67'
+
 plugins:
- after_photo:
+  after_photo:
     # 把章节的所有图片合并为一个pdf的插件
     - plugin: img2pdf
       kwargs:
         pdf_dir: temp
         filename_rule: Aname
+
 ```
      
 
