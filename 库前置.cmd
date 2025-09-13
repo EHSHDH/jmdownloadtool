@@ -1,1 +1,1 @@
-pip install jmcomic img2pdf
+pip install jmcomic img2pdf aiohttp
