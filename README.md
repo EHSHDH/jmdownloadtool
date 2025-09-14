@@ -1,13 +1,14 @@
 # 禁漫下载工具
 #### 用于将本子下载到本地并保存为pdf
 #### 基于hect0x7/JMComic-Crawler-Python二次开发的py小工具
-#### https://github.com/hect0x7/JMComic-Crawler-Python
+#### [JMComic-Crawler-Python](https://github.com/hect0x7/JMComic-Crawler-Python "JMComic-Crawler-Python")
 
 ##我认为的牛逼之处
 - **支持图片转化为pdf**: ~~那很方便了~~
 - **支持同时保存本子标题作者等信息**: ~~纯属我吃饱了撑的~~
 - **支持pdf与txt保存在同一文件夹**: ~~其实你也没有别的选择，因为我就这么做的~~
 - **支持web与mobile双重爬取模式**: ~~因为有时候某个会抽风~~
+- **支持批量下载**: ~~一个一个下载真的很麻烦~~
 - **几乎无更新**: ~~除非我很无聊~~
 
 ##如何使用
@@ -18,9 +19,14 @@
 	  ```
  3. 运行start.py。
  4. 输入1/2选择爬取方式 1=mobile 2=web mobile端不限ip兼容性好，web端限制ip地区但效率高。
- 5. 输入jm数字号码，不要输入"jm"这两个英文字母，只输入数字就行。
- 6. 在根目录/comic内欣赏你的本子。
- 
+ 5. 输入1/2选择批量还是单个下载。
+ 6. 若选择1单个，则输入jm数字号码，不要输入"jm"这两个英文字母，只输入数字就行。
+ 7. 若选择2批量，则在根目录jm.txt内输入你要下载的所有本子的jm号，可以用空格，换行，逗号等乱七八糟的方式分隔。
+ 8. 在 根目录/comic 内欣赏你的本子。
+
+### 对于批量下载
+[导出收藏夹数据](https://github.com/hect0x7/JMComic-Crawler-Python/blob/master/assets/docs/sources/tutorial/10_export_favorites.md "导出收藏夹数据")
+
  ### 文件结构
 
 | 名称          | 说明                                 |
@@ -31,6 +37,7 @@
 | `web.yml`     | 用于 web 模式的配置文件              |
 | `start.py`    | 启动工具                             |
 | `库前置.cmd`  | 一键安装三个前置库                   |
+| `jm.txt`  | 输入你要批量下载的本子jm号                   |
 
  
 
@@ -39,7 +46,7 @@
 这里是我自己针对我的yml进行的注释和实例，**还是要根据自己实际情况进行调整**
 
 JMcomic插件官方配置文件指南（其实还是推荐你们看这个）
-https://github.com/hect0x7/JMComic-Crawler-Python/blob/master/assets/docs/sources/option_file_syntax.md
+[配置文件指南](https://github.com/hect0x7/JMComic-Crawler-Python/blob/master/assets/docs/sources/option_file_syntax.md "配置文件指南")
 
 ```yml
 client:
@@ -108,7 +115,12 @@ plugins:
      
 
 # 自定义txt内保存内容
-## GPT告诉我的大部分变量 没猜错的话每个属性名前都要加 album.
+## GPT告诉我的大部分变量 每个属性名前都要加 album.
+因为我我用了
+```python
+album = client.get_album_detail（）
+```
+另外，不确定每个变量都是可用的，因为我不会总结，但是90%还是可以用的。
 
 | 属性名             | 类型                   | 说明               |
 | --------------- | -------------------- | ---------------- |
@@ -128,7 +140,7 @@ plugins:
 | `source`        | str                  | 漫画来源             |
 | `photos`        | list\[JmPhotoDetail] | 漫画图片列表，每张图片是一个对象 |
 
-在我的py程序内33行往下 （f"""xxx""")都是txt内保存内容
+在我的py程序内（f"""xxx""")都是txt内保存内容
 ```python
 f.write(f"""漫画名称：{album.title}
 漫画作者：{album.author}
@@ -139,6 +151,26 @@ JM号：{sr}""")
 # 比如我还想在里面加入漫画简介 可以直接在里面换行加入
 # 简介：{album.description}
 ```
+
+### 另外一些注意事项
+1. 这个小工具单个下载本子流程是 
+输入jm号并检测是不是纯数字
+定义album变量
+检测comic内有无已存在的此本子文件夹，若有请删除
+运行download_album（这一步默认是下载本子图片，保存在py和yml根目录内以本子标题为名称的文件夹内）
+自动转换为pdf,保存在temp
+删除上面提到的这个文件夹（懒得手动删总之我要的是pdf）
+在comic内新建本子文件夹
+新建txt并写入信息
+将temp内pdf移动到comic/标题 文件夹中
+继续下一次循环
+
+2. 如果你使用的批量下载，则不会进行检测已有文件夹和删除本子图片文件夹的步骤，因为据我所知有的本子用的特殊符号无法用作文件夹名称，但仍保留此部分代码，仅禁用，有这需要可以取消禁用，不确定会不会出现问题。
+
+3. 如果你批量出现报错，我提供的解决方案是
+comic内找到你成功下载的最后一个本子a
+在txt内删掉这个a本子的后面本子的jm号
+有些本子可能是标题内有特殊符号问题。无论是批量还是单个都无法下载成功，懒得研究解决方案，有大佬知道的话可以提个建议，谢谢。
 
 ## 其他进阶用法还请到原库作者github仓库查找，还有好多功能我不会用，还请谅解
 ### 说点题外话
