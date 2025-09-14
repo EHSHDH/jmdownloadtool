@@ -67,7 +67,6 @@ JM号：{sr}""") #txt内写入信息
                     continue
                 else:
                     download_album(int(i), option)
-                    shutil.rmtree("tmp")
                     os.makedirs(os.path.join("comic", title), exist_ok=True)
                     file_path = os.path.join(os.path.join("comic", title), f"{title}.txt")
                     with open(file_path, "w", encoding="utf-8") as f:
@@ -80,6 +79,7 @@ JM号：{i}""")
                         dst_folder = os.path.join("comic", title)
                         os.makedirs(dst_folder, exist_ok=True) 
                         shutil.move(src_file, os.path.join(dst_folder, f"{title}.pdf")) #移动pdf到标题文件夹
+                        shutil.rmtree("tmp")
 
         
         else:
