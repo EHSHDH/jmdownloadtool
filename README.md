@@ -9,7 +9,9 @@
 - **支持pdf与txt保存在同一文件夹**: ~~其实你也没有别的选择，因为我就这么做的~~
 - **支持web与mobile双重爬取模式**: ~~因为有时候某个会抽风~~
 - **支持批量下载**: ~~一个一个下载真的很麻烦~~
+- **自动优化标题**: ~~被windows命名规范搞死了~~
 - **几乎无更新**: ~~除非我很无聊~~
+
 
 ##如何使用
  1. 安装python，jmcomic库需python≥3.7，其实直接无脑最新版就可以了。
@@ -17,6 +19,7 @@
       ```shell
 	  pip install jmcomic img2pdf aiohttp
 	  ```
+ 3. 解压jmdownloadtoolv1.x.zip，并将其中两个yml配置文件中的ur pd改为自己的jm用户名，密码（必须）
  3. 运行start.py。
  4. 输入1/2选择爬取方式 1=mobile 2=web mobile端不限ip兼容性好，web端限制ip地区但效率高。
  5. 输入1/2选择批量还是单个下载。
@@ -32,12 +35,12 @@
 | 名称          | 说明                                 |
 |---------------|--------------------------------------|
 | `comic/`      | 存储漫画文件夹                       |
-| `temp/`       | 存储 img 转 pdf 时的缓存文件夹         |
+| `tmp/`       | 存储本子源文件文件夹和转换过后的pdf         |
 | `mobile.yml`  | 用于 mobile 模式的配置文件           |
 | `web.yml`     | 用于 web 模式的配置文件              |
 | `start.py`    | 启动工具                             |
 | `库前置.cmd`  | 一键安装三个前置库                   |
-| `jm.txt`  | 输入你要批量下载的本子jm号                   |
+| `jm.txt`  | 你要批量下载的本子jm号                   |
 
  
 
@@ -52,25 +55,25 @@ JMcomic插件官方配置文件指南（其实还是推荐你们看这个）
 client:
   cache: null
   domain:
-    html: 
+    html:
       #下面都是jm的域名，也可以根据你自己的网络环境进行调整 优先用最上面的
       - jmcomic-zzz.one
       - jmcomic-zzz.org
-      - 18comic.vip 
+      - 18comic.vip
       - 18comic.org
       - jm18c-zxc.org
       - jm18c-zxc.cc
       - jm18c-zxc.net
     api:
-      - www.jmapiproxyxxx.vip 
+      - www.jmapiproxyxxx.vip
         #这是移动端的接口
-  impl: html 
+  impl: html
   # html网页 api移动端
   postman:
     meta_data:
       headers: null
       impersonate: chrome
-      proxies: 
+      proxies:
         #顾名思义代理
         http: 127.0.0.1:7890
         https: 127.0.0.1:7890
@@ -78,20 +81,21 @@ client:
   retry_times: 5
 
 dir_rule:
-  base_dir: .
-  rule: Bd_Pname
+#本子jpg保存路径/名称
+  base_dir: tmp
+  rule: Bd_Aid
 
 download:
   cache: true
-  impl: aiohttp  
+  impl: aiohttp
   # 可选: requests（默认）、aiohttp（更快，需安装） 这是gpt告诉我的
   chunk_size: 8192
   #数据块大小 单位字节
   image:
     decode: true
-    suffix: .jpg 
+    suffix: .jpg
     # 若设置为null则保存为webp 转换为pdf文件体积极大 jpg无此问题
-  threading: 
+  threading:
     # 线程数 章节/图片
     image: 4
     photo: 4
@@ -104,12 +108,18 @@ plugins:
 version: '2.67'
 
 plugins:
+   after_init:
+    - plugin: login # 登录插件
+      kwargs:
+        username: ur # 用户名
+        password: pd # 密码
   after_photo:
     # 把章节的所有图片合并为一个pdf的插件
     - plugin: img2pdf
       kwargs:
-        pdf_dir: temp
-        filename_rule: Aname
+	  #pdf保存路径/名称
+        pdf_dir: tmp
+        filename_rule: Aid
 
 ```
      
@@ -158,22 +168,32 @@ JM号：{sr}""")
 定义album变量
 检测comic内有无已存在的此本子文件夹，若有请删除
 运行download_album（这一步默认是下载本子图片，保存在py和yml根目录内以本子标题为名称的文件夹内）
-自动转换为pdf,保存在temp
+自动转换为pdf,保存在tmp
 删除上面提到的这个文件夹（懒得手动删总之我要的是pdf）
 在comic内新建本子文件夹
 新建txt并写入信息
-将temp内pdf移动到comic/标题 文件夹中
+将tmp内pdf移动到comic/标题 文件夹中
 继续下一次循环
+仅供参考，可以做解决问题思路
 
-2. 如果你使用的批量下载，则不会进行检测已有文件夹和删除本子图片文件夹的步骤，因为据我所知有的本子用的特殊符号无法用作文件夹名称，但仍保留此部分代码，仅禁用，有这需要可以取消禁用，不确定会不会出现问题。
-
-3. 如果你批量出现报错，我提供的解决方案是
+2. 此条仅适合v1.1 更新后1.2应该解决了这个些问题
+~~如果你批量出现报错，我提供的解决方案是
 comic内找到你成功下载的最后一个本子a
 在txt内删掉这个a本子的后面本子的jm号
-有些本子可能是标题内有特殊符号问题。无论是批量还是单个都无法下载成功，懒得研究解决方案，有大佬知道的话可以提个建议，谢谢。
+有些本子可能是标题内有特殊符号问题。无论是批量还是单个都无法下载成功，懒得研究解决方案，有大佬知道的话可以提个建议，谢谢。~~
+
+3. 关于标题优化 v1.2
+大部分批量下载中报错，大概都是因为文件名/路径名问题。windows文件名称中一些符号无法使用，因此借助正则表达式优化了标题，例子如下
+
+ (無修完整版) [VYCMa]蒙德温泉节 第二幕
+ 蒙德温泉节 第二幕
+ 
+ 并因为这个原因 在yml中修改了图片文件夹名称，路径，pdf文件名称，路径
+ 名称均改为jm的数字id，路径均改为/tmp，最大限度避免命名问题
+
 
 ## 其他进阶用法还请到原库作者github仓库查找，还有好多功能我不会用，还请谅解
-### 说点题外话
+### 说点题外话 v1.0
 ##### 这个小工具我只做了不到12小时，全程借助GPT（但是没有套用任何GPT给出的代码，纯手搓，只是报错会去问gpt）
 #####我python0基础，唯一的一点知识是在高一一年的微机课学的
 ######~~其实跟没学没啥区别，也就只学了print input 变量赋值 while if mport~~
