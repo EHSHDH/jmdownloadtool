@@ -59,13 +59,13 @@ JM号：{sr}""") #txt内写入信息
                 #continue
             #else:
             # 上述四行代码是检测已有文件夹部分
-                download_album(int(i), option)
+            download_album(int(i), option)
                 # shutil.rmtree(album.title)
                 # 上述一行代码是删除图片文件夹部分
-                folder_name = f"{album.title}"
-                os.makedirs(os.path.join("comic", album.title), exist_ok=True)
-                file_path = os.path.join(os.path.join("comic", album.title), f"{album.title}.txt")
-                with open(file_path, "w", encoding="utf-8") as f:
+            folder_name = f"{album.title}"
+            os.makedirs(os.path.join("comic", album.title), exist_ok=True)
+            file_path = os.path.join(os.path.join("comic", album.title), f"{album.title}.txt")
+            with open(file_path, "w", encoding="utf-8") as f:
                     f.write(f"""漫画名称：{album.title}
 漫画作者：{album.author}
 漫画标签：{album.tags}
