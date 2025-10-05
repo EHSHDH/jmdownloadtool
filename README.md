@@ -3,7 +3,7 @@
 #### 基于hect0x7/JMComic-Crawler-Python二次开发的py小工具
 #### [JMComic-Crawler-Python](https://github.com/hect0x7/JMComic-Crawler-Python "JMComic-Crawler-Python")
 
-##我认为的牛逼之处
+## 我认为的牛逼之处
 - **支持图片转化为pdf**: ~~那很方便了~~
 - **支持同时保存本子标题作者等信息**: ~~纯属我吃饱了撑的~~
 - **支持pdf与txt保存在同一文件夹**: ~~其实你也没有别的选择，因为我就这么做的~~
@@ -13,7 +13,7 @@
 - **几乎无更新**: ~~除非我很无聊~~
 
 
-##如何使用
+## 如何使用
  1. 安装python，jmcomic库需python≥3.7，其实直接无脑最新版就可以了。
  2. 安装jmcomic img2pdf aiohttp三个插件，直接在终端中运行。
       ```shell
@@ -44,7 +44,7 @@
 
  
 
-##yml配置
+## yml配置
 其中web.yml和mobile.yml是分别用在两种爬取方式的yml，我不会在只存在一个yml的情况下直接在python程序中更换爬取方式，所以搞了这么很简单的方式。
 这里是我自己针对我的yml进行的注释和实例，**还是要根据自己实际情况进行调整**
 
