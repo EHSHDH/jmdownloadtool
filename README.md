@@ -145,7 +145,6 @@ plugins:
     # 把章节的所有图片合并为一个pdf的插件
     - plugin: img2pdf
       kwargs:
-	  #pdf保存路径/名称
         pdf_dir: tmp
         filename_rule: Aid
 
