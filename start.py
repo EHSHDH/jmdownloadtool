@@ -85,7 +85,7 @@ JM号：{i}""")
         else:
         
             print("请输入1或2")
-os.system("pause")
+            os.system("pause")
 
                     
                    
