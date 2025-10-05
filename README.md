@@ -68,7 +68,7 @@ mobile.yml修改为web.yml
 
  
 
-##yml配置
+## yml配置
 其中web.yml和mobile.yml是分别用在两种爬取方式的yml，我不会在只存在一个yml的情况下直接在python程序中更换爬取方式，所以搞了这么很简单的方式。
 这里是我自己针对我的yml进行的注释和实例，**还是要根据自己实际情况进行调整**
 
@@ -141,7 +141,6 @@ plugins:
     # 把章节的所有图片合并为一个pdf的插件
     - plugin: img2pdf
       kwargs:
-	  #pdf保存路径/名称
         pdf_dir: tmp
         filename_rule: Aid
 
