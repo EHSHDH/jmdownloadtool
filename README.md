@@ -12,14 +12,15 @@
 - **自动优化标题**: ~~被windows命名规范搞死了~~
 - **几乎无更新**: ~~除非我很无聊~~
 
-
-## 如何使用
- 1. 安装python，jmcomic库需python≥3.7，其实直接无脑最新版就可以了。
- 2. 安装jmcomic img2pdf aiohttp三个插件，直接在终端中运行。
+## 准备阶段
+  1. 安装python，jmcomic库需python≥3.7，其实直接无脑最新版就可以了。
+  2. 安装jmcomic img2pdf aiohttp三个插件，直接在终端中运行。
       ```shell
 	  pip install jmcomic img2pdf aiohttp
 	  ```
- 3. 解压jmdownloadtoolv1.x.zip，并将其中两个yml配置文件中的ur pd改为自己的jm用户名，密码（必须）
+  3. 解压jmdownloadtoolv1.x.zip，并将其中两个yml配置文件中的ur pd改为自己的jm用户名，密码（必须）。
+
+### 如何下载本子
  3. 运行start.py。
  4. 输入1/2选择爬取方式 1=mobile 2=web mobile端不限ip兼容性好，web端限制ip地区但效率高。
  5. 输入1/2选择批量还是单个下载。
@@ -28,7 +29,25 @@
  8. 在 根目录/comic 内欣赏你的本子。
 
 ### 对于批量下载
+使用GitHubActions保存收藏夹教程
 [导出收藏夹数据](https://github.com/hect0x7/JMComic-Crawler-Python/blob/master/assets/docs/sources/tutorial/10_export_favorites.md "导出收藏夹数据")
+
+已更新保存收藏夹功能,用法：
+1. 在mobile/web中填写ur pd。
+2. 运行favorite.py。
+3. 保存所有收藏夹则选择1模式，保存特定分组文件夹则选择2模式。
+4. 若选择2模式则提示你输入floder代码，打开你的特定文件夹，地址栏显示
+`https://jm域名/user/你的名字/favorite/albums?folder=你的folder代码`
+则输入folder=后面的部分。
+5. 我设置的是保存为jm.txt和jm-title.txt，均保存在根目录内favorite文件夹
+前者只包含jm号，后者包含jm号和漫画标题，方便后期对比。
+6. 运行前记得清除favorite内两个txt文件，否则无法正常运行程序。
+7. 若有时保存的收藏夹明显少于实际内容，请自行将favorite.py中
+```python
+option = jmcomic.create_option_by_file('mobile.yml')
+```
+mobile.yml修改为web.yml
+
 
  ### 文件结构
 
@@ -36,15 +55,20 @@
 |---------------|--------------------------------------|
 | `comic/`      | 存储漫画文件夹                       |
 | `tmp/`       | 存储本子源文件文件夹和转换过后的pdf         |
+| `favorite/`  | 存储收藏夹保存内容                   |
+| `favorite/jm.txt`  | 只保存jm号的收藏夹保存文件                   |
+| `favorite/`  | 保存jm号结合标题的收藏夹保存文件                   |
 | `mobile.yml`  | 用于 mobile 模式的配置文件           |
 | `web.yml`     | 用于 web 模式的配置文件              |
-| `start.py`    | 启动工具                             |
+| `start.py`    | 启动程序                         |
+| `favorite.py`    | 保存收藏夹程序                             |
 | `库前置.cmd`  | 一键安装三个前置库                   |
 | `jm.txt`  | 你要批量下载的本子jm号                   |
 
+
  
 
-## yml配置
+##yml配置
 其中web.yml和mobile.yml是分别用在两种爬取方式的yml，我不会在只存在一个yml的情况下直接在python程序中更换爬取方式，所以搞了这么很简单的方式。
 这里是我自己针对我的yml进行的注释和实例，**还是要根据自己实际情况进行调整**
 

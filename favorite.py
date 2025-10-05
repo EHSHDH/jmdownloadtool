@@ -1,6 +1,6 @@
 import jmcomic
 from jmcomic import *
-option = jmcomic.create_option_by_file('web.yml')
+option = jmcomic.create_option_by_file('mobile.yml')
 client = option.build_jm_client()
 all_aid = []
 all_title = []
