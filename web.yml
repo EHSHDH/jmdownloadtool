@@ -43,8 +43,8 @@ plugins:
  after_init:
     - plugin: login # 登录插件
       kwargs:
-        username: ehshdh # 用户名
-        password: lishuaiyi123 # 密码
+        username: ur # 用户名
+        password: pd # 密码
  after_photo:
     # 把章节的所有图片合并为一个pdf的插件
     # 使用前需要安装依赖库: [pip install img2pdf]
